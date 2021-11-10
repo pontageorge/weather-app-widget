@@ -1,0 +1,19 @@
+.componentWrap {
+  text-align: center;
+}
+
+.weatherWidgetsWrap {
+  margin: 20px auto;
+
+  width: fit-content;
+}
+
+.contentWrap {
+  text-align: left;
+}
+
+.citiesSection {
+  text-align: left;
+
+  width: fit-content;
+}

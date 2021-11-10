@@ -1,0 +1,27 @@
+.dayForecast {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.dayForecast > h4 {
+  margin: 0;
+}
+
+.dayForecast > h4.temperatures {
+  text-align: right;
+  width: 25px;
+  margin: 0 5px;
+  color: black;
+}
+
+.dayForecast > h4.temperatures:last-child {
+  color: grey;
+}
+
+.dayForecast > img {
+  height: 32px;
+  width: 32px;
+
+  margin: 0 200px 0 auto;
+}
