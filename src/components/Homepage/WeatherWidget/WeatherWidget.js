@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { Fragment, useContext, useEffect, useState } from "react";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import { AppContext } from "context/appContext";
 import { css } from "@emotion/react";
 
@@ -42,6 +42,7 @@ export default function WeatherWidget({ name, isFavourite }) {
     getWeatherData();
 
     return exactMinuteUpdate(getWeatherData);
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const WidgetCSS = css`
