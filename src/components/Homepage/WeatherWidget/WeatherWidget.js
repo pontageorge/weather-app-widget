@@ -32,7 +32,6 @@ export default function WeatherWidget({ name, isFavourite }) {
     const getWeatherData = async () => {
       const currentLocation = await getCityWeather(name);
       if (currentLocation.status === 200) {
-        console.log(currentLocation.data);
         setWeatherData(currentLocation.data);
         getForecast(currentLocation.data.location.name);
       } else {

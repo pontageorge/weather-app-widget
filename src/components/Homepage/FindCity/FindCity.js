@@ -59,7 +59,6 @@ export default function FindCity() {
         onChange={(event, newValue) => {
           event.defaultMuiPrevented = true;
           if (newValue) {
-            console.log("well");
             setSelectedCity(getCityNameOnly(newValue));
             setCitySuggestions([]);
             setCity("");
