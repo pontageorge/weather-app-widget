@@ -14,7 +14,10 @@ import { favouriteCitiesReducer } from "./reducers/favouriteCitiesReducer";
 
 function AppProvider({ children }) {
   const [temperatureUnit, dispatchTemperatureUnit] = useReducer(temperatureUnitReducer, "C");
-  const [favouriteCities, dispatchFavouriteCities] = useReducer(favouriteCitiesReducer, []);
+  const [favouriteCities, dispatchFavouriteCities] = useReducer(
+    favouriteCitiesReducer,
+    localStorage.getItem("favourites") ? JSON.parse(localStorage.getItem("favourites")) : []
+  );
 
   const appContextValue = {
     temperatureUnit: temperatureUnit,
