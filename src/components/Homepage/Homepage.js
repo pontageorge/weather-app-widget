@@ -16,6 +16,7 @@ export default function Homepage() {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(getPosition);
     }
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigator]);
 
   function getPosition(position) {
