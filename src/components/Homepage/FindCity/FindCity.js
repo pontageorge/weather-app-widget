@@ -34,10 +34,6 @@ export default function FindCity() {
     return fullString.split(",")[0];
   };
 
-  const isCurrentLocationFavourite = () => {
-    return appContext.favouriteCities.includes(selectedCity);
-  };
-
   return (
     <div className={styles.componentWrap}>
       <h2>Lookup locations </h2>
@@ -67,11 +63,7 @@ export default function FindCity() {
         renderInput={(params) => <TextField {...params} label="Cities" />}
       />
       {selectedCity && !appContext.favouriteCities.includes(selectedCity) && (
-        <WeatherWidget
-          key={selectedCity}
-          name={selectedCity}
-          isFavourite={isCurrentLocationFavourite()}
-        />
+        <WeatherWidget key={selectedCity} query={selectedCity} />
       )}
     </div>
   );

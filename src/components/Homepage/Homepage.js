@@ -1,5 +1,4 @@
-import React, { useContext } from "react";
-import { AppContext } from "context/appContext";
+import React, { useEffect, useState } from "react";
 
 import styles from "./Homepage.module.css";
 
@@ -9,11 +8,19 @@ import FavouriteCities from "./FavouriteCities/FavouriteCities";
 import FindCity from "./FindCity/FindCity";
 
 export default function Homepage() {
-  const appContext = useContext(AppContext);
+  const [geolocation, setGeolocation] = useState(undefined);
 
-  const isCurrentLocationFavourite = () => {
-    return appContext.favouriteCities.includes("London");
-  };
+  const DEFAULT_CITY = "London";
+
+  useEffect(() => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(getPosition);
+    }
+  }, [navigator]);
+
+  function getPosition(position) {
+    setGeolocation(position.coords.latitude + "," + position.coords.longitude);
+  }
 
   return (
     <div className={styles.componentWrap}>
@@ -22,9 +29,9 @@ export default function Homepage() {
       <div className={styles.contentWrap}>
         <FavouriteCities />
         <div className={styles.citiesSection}>
-          <h2>Current location</h2>
+          <h2>{geolocation ? "Current location" : "Featured location"}</h2>
           <div className={styles.weatherWidgetsWrap}>
-            <WeatherWidget name={"London"} isFavourite={isCurrentLocationFavourite()} />
+            <WeatherWidget query={geolocation ? geolocation : DEFAULT_CITY} />
           </div>
         </div>
         <FindCity />

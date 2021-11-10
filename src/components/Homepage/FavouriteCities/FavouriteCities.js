@@ -13,7 +13,7 @@ export default function FavouriteCities() {
       <h2>Favourite locations</h2>
       <div className={styles.weatherWidgetsWrap}>
         {appContext.favouriteCities.map((city, i) => (
-          <WeatherWidget key={city} name={city} isFavourite />
+          <WeatherWidget key={city} query={city} isFavourite />
         ))}
         {appContext.favouriteCities.length === 0 && <h3>You have no favourite cities</h3>}
       </div>

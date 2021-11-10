@@ -15,14 +15,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import HourlyWeather from "./HourlyWeather/HourlyWeather";
 import DailyWeather from "./DailyWeather/DailyWeather";
 
-export default function WeatherWidget({ name, isFavourite }) {
+export default function WeatherWidget({ query }) {
+  const appContext = useContext(AppContext);
+
   const [isExpanded, setIsExpanded] = useState(false);
   const [forecast, setForecast] = useState(undefined);
   const [weatherData, setWeatherData] = useState(undefined);
 
   useEffect(() => {
-    const getForecast = async (name) => {
-      const cityForecast = await getCityForecast(name);
+    const getForecast = async (query) => {
+      const cityForecast = await getCityForecast(query);
       if (cityForecast.status === 200) {
         setForecast(cityForecast.data);
       } else {
@@ -30,7 +32,7 @@ export default function WeatherWidget({ name, isFavourite }) {
       }
     };
     const getWeatherData = async () => {
-      const currentLocation = await getCityWeather(name);
+      const currentLocation = await getCityWeather(query);
       if (currentLocation.status === 200) {
         setWeatherData(currentLocation.data);
         getForecast(currentLocation.data.location.name);
@@ -42,7 +44,7 @@ export default function WeatherWidget({ name, isFavourite }) {
 
     return exactMinuteUpdate(getWeatherData);
     //eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [query]);
 
   const WidgetCSS = css`
     position: relative;
@@ -61,28 +63,27 @@ export default function WeatherWidget({ name, isFavourite }) {
     overflow: hidden;
   `;
 
+  const isCurrentLocationFavourite = () => {
+    return appContext.favouriteCities.includes(weatherData.location.name);
+  };
+
   return (
     <div css={WidgetCSS} className={styles.componentWrap}>
       {weatherData && (
         <Fragment>
           {isExpanded && (
             <Helmet>
-              <title>{"Viewing " + name}</title>
+              <title>{"Viewing " + query}</title>
             </Helmet>
           )}
           <WidgetHeader weatherData={weatherData} />
           <HourlyWeather isExpanded={isExpanded} forecast={forecast} />
           <DailyWeather forecast={forecast} isExpanded={isExpanded} />
-          <WidgetFooter
-            isExpanded={isExpanded}
-            setIsExpanded={setIsExpanded}
-            isFavourite={isFavourite}
-            weatherData={weatherData}
-          >
+          <WidgetFooter>
             <TemperatureMain weatherData={weatherData} />
             <Controls
               weatherData={weatherData}
-              isFavourite={isFavourite}
+              isFavourite={isCurrentLocationFavourite()}
               isExpanded={isExpanded}
               setIsExpanded={setIsExpanded}
             />
@@ -115,9 +116,11 @@ function TemperatureMain({ weatherData }) {
   return (
     <div className={styles.temperatureWrap}>
       <h1 className={styles.temperature}>
-        {(appContext.temperatureUnit === "C"
-          ? weatherData.current.temp_c
-          : weatherData.current.temp_f) +
+        {Math.round(
+          appContext.temperatureUnit === "C"
+            ? weatherData.current.temp_c
+            : weatherData.current.temp_f
+        ) +
           "°" +
           appContext.temperatureUnit}
       </h1>

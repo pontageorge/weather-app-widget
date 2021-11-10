@@ -56,7 +56,7 @@ export default function HourlyWeather({ forecast, isExpanded }) {
 
   const getHourlyForecast = () => {
     if (forecast) {
-      let currentHour = new Date().getHours();
+      let currentHour = new Date(forecast.location.localtime).getHours();
 
       let weatherForEachNext24Hours = [];
 
@@ -65,7 +65,7 @@ export default function HourlyWeather({ forecast, isExpanded }) {
       for (var i = currentHour; i < 24; i++) {
         var theHourForecast = forecast.forecast.forecastday[0].hour[i];
         hoursLeftCurrentDay.push({
-          temperature: theHourForecast["heatindex_" + appContext.temperatureUnit.toLowerCase()],
+          temperature: theHourForecast["temp_" + appContext.temperatureUnit.toLowerCase()],
           hour: i,
           condition: theHourForecast.condition.icon,
         });
@@ -76,8 +76,7 @@ export default function HourlyWeather({ forecast, isExpanded }) {
       for (var j = 0; j < currentHour; j++) {
         var theHourForecastNextDay = forecast.forecast.forecastday[1].hour[j];
         hoursAfterNextDay.push({
-          temperature:
-            theHourForecastNextDay["heatindex_" + appContext.temperatureUnit.toLowerCase()],
+          temperature: theHourForecastNextDay["temp_" + appContext.temperatureUnit.toLowerCase()],
           hour: j,
           condition: theHourForecastNextDay.condition.icon,
         });
@@ -88,9 +87,9 @@ export default function HourlyWeather({ forecast, isExpanded }) {
       return weatherForEachNext24Hours.map((weather, i) => {
         return (
           <div key={i + "weather"} className={styles.weatherHour}>
-            <h3>{Math.round(weather.temperature) + "°" + appContext.temperatureUnit}</h3>
+            <h3>{i === 0 ? <strong>Now</strong> : weather.hour}</h3>
             <img src={weather.condition} alt={"weatherHour" + i} />
-            <h3>{weather.hour}</h3>
+            <h3>{Math.round(weather.temperature) + "°" + appContext.temperatureUnit}</h3>
           </div>
         );
       });
