@@ -1,10 +1,4 @@
-import {
-  ADD_FAVOURITE_CITY,
-  DELETE_FAVOURITE_CITY,
-  RUN_FAVOURITE_CITY_UPDATE,
-} from "context/actionTypes";
-
-import { getCityWeather } from "requests/weather.requests";
+import { ADD_FAVOURITE_CITY, DELETE_FAVOURITE_CITY } from "context/actionTypes";
 
 export const addFavouriteCity = async (city, dispatch) => {
   dispatch({

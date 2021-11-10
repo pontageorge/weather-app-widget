@@ -74,11 +74,12 @@ export default function HourlyWeather({ forecast, isExpanded }) {
       let hoursAfterNextDay = [];
 
       for (var j = 0; j < currentHour; j++) {
-        var theHourForecast = forecast.forecast.forecastday[1].hour[j];
+        var theHourForecastNextDay = forecast.forecast.forecastday[1].hour[j];
         hoursAfterNextDay.push({
-          temperature: theHourForecast["heatindex_" + appContext.temperatureUnit.toLowerCase()],
+          temperature:
+            theHourForecastNextDay["heatindex_" + appContext.temperatureUnit.toLowerCase()],
           hour: j,
-          condition: theHourForecast.condition.icon,
+          condition: theHourForecastNextDay.condition.icon,
         });
       }
 

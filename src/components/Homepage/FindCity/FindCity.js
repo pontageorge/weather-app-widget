@@ -9,7 +9,7 @@ import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import WeatherWidget from "components/Homepage/WeatherWidget/WeatherWidget";
 
-export default function FindCity({}) {
+export default function FindCity() {
   const appContext = useContext(AppContext);
 
   const [city, setCity] = useState("");

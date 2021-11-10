@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { AppContext } from "context/appContext";
 
 import styles from "./FavouriteCities.module.css";

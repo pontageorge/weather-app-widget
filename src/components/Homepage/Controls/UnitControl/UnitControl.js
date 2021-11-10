@@ -6,7 +6,7 @@ import styles from "./UnitControl.module.css";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import ToggleButton from "@mui/material/ToggleButton";
 
-export default function UnitControl({}) {
+export default function UnitControl() {
   const appContext = useContext(AppContext);
 
   const handleTemperatureUnit = (event, newUnit) => {
