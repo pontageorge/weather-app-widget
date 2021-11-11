@@ -1,4 +1,4 @@
-.weatherHour {
+.hourWeatherElement {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -9,12 +9,14 @@
   margin: 0 5px;
 }
 
-.weatherHour > h3 {
+.hourWeatherElement > h3 {
   margin: 3px 0;
+
   font-size: 14px;
 }
-.weatherHour > img {
+.hourWeatherElement > img {
   user-select: none;
+
   height: 32px;
   width: 32px;
 }

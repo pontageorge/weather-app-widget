@@ -5,32 +5,15 @@ import { css } from "@emotion/react";
 
 import styles from "./DailyWeather.module.css";
 
-export default function DailyWeather({ forecast, isExpanded }) {
+export default function DailyWeather({ forecast }) {
   const appContext = useContext(AppContext);
-
-  const arrayOfDays = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
 
   const ForecastCSS = css`
     display: flex;
     justify-content: flex-start;
     flex-direction: column;
 
-    opacity: ${isExpanded ? "1" : "0"};
-
-    position: relative;
-
     padding: 10px;
-
-    transition: all ease-in-out 0.75s;
-    transition-property: opacity;
   `;
 
   const getDailyForecast = () => {
@@ -50,17 +33,31 @@ export default function DailyWeather({ forecast, isExpanded }) {
       }
 
       return next7DaysForecast.map((day) => {
-        return (
-          <div className={styles.dayForecast} key={day.date}>
-            <h4>{arrayOfDays[new Date(day.date).getDay()]}</h4>
-            <img src={day.condition} alt={day.date} />
-            <h4 className={styles.temperatures}>{Math.round(day.max_temp)}</h4>
-            <h4 className={styles.temperatures}>{Math.round(day.min_temp)}</h4>
-          </div>
-        );
+        return <DayWeatherElement key={day.date} day={day} />;
       });
     }
   };
 
   return <div css={ForecastCSS}>{getDailyForecast()}</div>;
+}
+
+function DayWeatherElement({ day }) {
+  const arrayOfDays = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+
+  return (
+    <div className={styles.dayForecast} key={day.date}>
+      <h4>{arrayOfDays[new Date(day.date).getDay()]}</h4>
+      <img src={day.condition} alt={day.date} />
+      <h4 className={styles.temperatures}>{Math.round(day.max_temp)}</h4>
+      <h4 className={styles.temperatures}>{Math.round(day.min_temp)}</h4>
+    </div>
+  );
 }

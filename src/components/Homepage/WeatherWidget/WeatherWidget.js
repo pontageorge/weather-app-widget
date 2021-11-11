@@ -8,12 +8,12 @@ import { getCityWeather } from "requests/weather.requests";
 import { getCityForecast } from "requests/weather.requests";
 import { exactMinuteUpdate } from "utils/timing.utils";
 
-import styles from "./WeatherWidget.module.css";
-
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
+import { WidgetHeader, WidgetFooter, WidgetContent } from "./WidgetSections/WidgetSections";
 import HourlyWeather from "./HourlyWeather/HourlyWeather";
 import DailyWeather from "./DailyWeather/DailyWeather";
+import WidgetControls from "./WidgetControls/WidgetControls";
+import CurrentTemperature from "./CurrentTemperature/CurrentTemperature";
+import { getFullLocationName } from "utils/string.utils";
 
 export default function WeatherWidget({ query }) {
   const appContext = useContext(AppContext);
@@ -64,24 +64,26 @@ export default function WeatherWidget({ query }) {
   `;
 
   const isCurrentLocationFavourite = () => {
-    return appContext.favouriteCities.includes(weatherData.location.name);
+    return appContext.favouriteCities.includes(getFullLocationName(weatherData.location));
   };
 
   return (
-    <div css={WidgetCSS} className={styles.componentWrap}>
+    <div css={WidgetCSS}>
       {weatherData && (
         <Fragment>
           {isExpanded && (
             <Helmet>
-              <title>{"Viewing " + query}</title>
+              <title>{"Viewing " + (weatherData ? weatherData.location.name : query)}</title>
             </Helmet>
           )}
           <WidgetHeader weatherData={weatherData} />
-          <HourlyWeather isExpanded={isExpanded} forecast={forecast} />
-          <DailyWeather forecast={forecast} isExpanded={isExpanded} />
+          <WidgetContent isExpanded={isExpanded}>
+            <HourlyWeather isExpanded={isExpanded} forecast={forecast} />
+            <DailyWeather forecast={forecast} isExpanded={isExpanded} />
+          </WidgetContent>
           <WidgetFooter>
-            <TemperatureMain weatherData={weatherData} />
-            <Controls
+            <CurrentTemperature weatherData={weatherData} />
+            <WidgetControls
               weatherData={weatherData}
               isFavourite={isCurrentLocationFavourite()}
               isExpanded={isExpanded}
@@ -90,68 +92,6 @@ export default function WeatherWidget({ query }) {
           </WidgetFooter>
         </Fragment>
       )}
-    </div>
-  );
-}
-
-function WidgetHeader({ weatherData }) {
-  const getCityLocalTime = (date) => {
-    if (date) return date.split(" ")[1];
-  };
-
-  return (
-    <div className={styles.headerWrap}>
-      <h2 className={styles.headerCityName}>{weatherData.location.name}</h2>
-      <h3 className={styles.headerCityTime}>{getCityLocalTime(weatherData.location.localtime)}</h3>
-    </div>
-  );
-}
-
-function WidgetFooter({ children }) {
-  return <div className={styles.contentWrap}>{children}</div>;
-}
-
-function TemperatureMain({ weatherData }) {
-  const appContext = useContext(AppContext);
-  return (
-    <div className={styles.temperatureWrap}>
-      <h1 className={styles.temperature}>
-        {Math.round(
-          appContext.temperatureUnit === "C"
-            ? weatherData.current.temp_c
-            : weatherData.current.temp_f
-        ) +
-          "°" +
-          appContext.temperatureUnit}
-      </h1>
-      <img
-        className={styles.conditionImage}
-        src={weatherData.current.condition.icon}
-        alt={"condition_icon"}
-      />
-    </div>
-  );
-}
-
-function Controls({ weatherData, isFavourite, isExpanded, setIsExpanded }) {
-  const appContext = useContext(AppContext);
-
-  return (
-    <div className={styles.cityControls}>
-      <FontAwesomeIcon
-        className={styles.favourite}
-        icon={[isFavourite ? "fas" : "far", "heart"]}
-        onClick={() =>
-          isFavourite
-            ? appContext.deleteFavouriteCity(weatherData.location.name)
-            : appContext.addFavouriteCity(weatherData.location.name)
-        }
-      />
-      <FontAwesomeIcon
-        className={styles.expand}
-        onClick={() => setIsExpanded(!isExpanded)}
-        icon={["fas", isExpanded ? "compress-arrows-alt" : "expand-arrows-alt"]}
-      />
     </div>
   );
 }

@@ -22,7 +22,9 @@
   margin: 0 0 0 auto;
 }
 
-.contentWrap {
+.footerWrap {
+  background-color: #fff;
+
   width: -moz-calc(100% - 20px);
   width: -webkit-calc(100% - 20px);
   width: -o-calc(100% - 20px);
@@ -32,45 +34,7 @@
   justify-content: space-between;
 
   position: absolute;
-  bottom: 10px;
+  bottom: 0;
 
-  background-color: white;
-}
-
-.temperatureWrap {
-  display: flex;
-  justify-content: flex-start;
-}
-
-.temperature {
-  font-size: 36px;
-
-  margin: 0;
-}
-
-.conditionImage {
-  user-select: none;
-
-  margin: 6px 0 0 10px;
-
-  width: 36px;
-  height: 36px;
-}
-
-.cityControls {
-  margin: auto 0 0 0;
-}
-
-.cityControls svg {
-  cursor: pointer;
-  margin: 0 0 0 5px;
-  font-size: 18px;
-}
-
-.favourite {
-  color: #b22222;
-}
-
-.expand {
-  color: #333;
+  padding: 0 0 10px 0;
 }

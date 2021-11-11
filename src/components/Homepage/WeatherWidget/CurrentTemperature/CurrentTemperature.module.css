@@ -1,0 +1,19 @@
+.temperatureWrap {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.temperature {
+  font-size: 36px;
+
+  margin: 0;
+}
+
+.conditionImage {
+  user-select: none;
+
+  margin: 6px 0 0 10px;
+
+  width: 36px;
+  height: 36px;
+}

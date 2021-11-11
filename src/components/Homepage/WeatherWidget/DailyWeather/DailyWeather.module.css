@@ -10,8 +10,11 @@
 
 .dayForecast > h4.temperatures {
   text-align: right;
+
   width: 25px;
+
   margin: 0 5px;
+
   color: black;
 }
 
@@ -23,5 +26,5 @@
   height: 32px;
   width: 32px;
 
-  margin: 0 200px 0 auto;
+  margin: 0 100px 0 auto;
 }

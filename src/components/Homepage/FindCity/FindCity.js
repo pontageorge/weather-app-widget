@@ -30,23 +30,28 @@ export default function FindCity() {
     setCity(newValue);
   };
 
+  const isInFavouriteCities = (option) => {
+    return appContext.favouriteCities.includes(option);
+  };
+
+  const isSelectedCity = (option) => {
+    return option === selectedCity;
+  };
+
   const getCityNameOnly = (fullString) => {
     return fullString.split(",")[0];
   };
 
   return (
     <div className={styles.componentWrap}>
-      <h2>Lookup locations </h2>
+      <h2>Lookup locations</h2>
       <Autocomplete
         className={styles.autocompleteInput}
         disablePortal
         id="autocomplete-cities"
         options={citySuggestions}
         getOptionDisabled={(option) => {
-          return (
-            appContext.favouriteCities.includes(getCityNameOnly(option)) ||
-            getCityNameOnly(option) === selectedCity
-          );
+          return isInFavouriteCities(option) || isSelectedCity(option);
         }}
         sx={{ width: 300 }}
         inputValue={city}
@@ -55,14 +60,14 @@ export default function FindCity() {
         onChange={(event, newValue) => {
           event.defaultMuiPrevented = true;
           if (newValue) {
-            setSelectedCity(getCityNameOnly(newValue));
+            setSelectedCity(newValue);
             setCitySuggestions([]);
             setCity("");
           }
         }}
         renderInput={(params) => <TextField {...params} label="Cities" />}
       />
-      {selectedCity && !appContext.favouriteCities.includes(selectedCity) && (
+      {selectedCity && !isInFavouriteCities(selectedCity) && (
         <WeatherWidget key={selectedCity} query={selectedCity} />
       )}
     </div>

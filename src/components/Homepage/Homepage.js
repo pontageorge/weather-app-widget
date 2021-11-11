@@ -10,7 +10,7 @@ import FindCity from "./FindCity/FindCity";
 export default function Homepage() {
   const [geolocation, setGeolocation] = useState(undefined);
 
-  const DEFAULT_CITY = "London";
+  const DEFAULT_CITY = "London, City of London, Greater London, United Kingdom";
 
   useEffect(() => {
     if ("geolocation" in navigator) {

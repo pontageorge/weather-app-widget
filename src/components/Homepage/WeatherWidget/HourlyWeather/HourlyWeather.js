@@ -1,14 +1,15 @@
 /** @jsxImportSource @emotion/react */
-import { useState, useRef, useContext } from "react";
+import { useState, useContext } from "react";
 import { AppContext } from "context/appContext";
 import { css } from "@emotion/react";
 
 import styles from "./HourlyWeather.module.css";
 
-import Button from "@mui/material/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-export default function HourlyWeather({ forecast, isExpanded }) {
+import Button from "@mui/material/Button";
+
+export default function HourlyWeather({ forecast }) {
   const appContext = useContext(AppContext);
 
   const HOUR_FORECASTS_PER_SLIDE = 6;
@@ -21,21 +22,11 @@ export default function HourlyWeather({ forecast, isExpanded }) {
 
   const [hourSlideIndex, setHourSlideIndex] = useState(0);
 
-  const slideContentRef = useRef();
-
   const ForecastCSS = css`
     display: flex;
     justify-content: flex-start;
 
-    opacity: ${isExpanded ? "1" : "0"};
-
-    position: relative;
-
     padding: 10px;
-    margin: 0 10px 0 0;
-
-    transition: all ease-in-out 0.75s;
-    transition-property: opacity;
 
     margin: 10px 0 0 0;
   `;
@@ -46,8 +37,6 @@ export default function HourlyWeather({ forecast, isExpanded }) {
   const HoursForecastCSS = css`
     display: flex;
     justify-content: flex-start;
-
-    position: relative;
 
     transform: translateX(-${HOUR_FORECAST_SECTION_PIXEL_SIZE * hourSlideIndex}px);
 
@@ -85,13 +74,7 @@ export default function HourlyWeather({ forecast, isExpanded }) {
       weatherForEachNext24Hours = [...hoursLeftCurrentDay, ...hoursAfterNextDay];
 
       return weatherForEachNext24Hours.map((weather, i) => {
-        return (
-          <div key={i + "weather"} className={styles.weatherHour}>
-            <h3>{i === 0 ? <strong>Now</strong> : weather.hour}</h3>
-            <img src={weather.condition} alt={"weatherHour" + i} />
-            <h3>{Math.round(weather.temperature) + "°" + appContext.temperatureUnit}</h3>
-          </div>
-        );
+        return <HourWeatherElement key={"weather" + i} weather={weather} index={i} />;
       });
     }
   };
@@ -103,12 +86,10 @@ export default function HourlyWeather({ forecast, isExpanded }) {
         size={"small"}
         variant="outlined"
       >
-        <FontAwesomeIcon className={styles.buttonicon} icon={["fas", "arrow-left"]} />
+        <FontAwesomeIcon icon={["fas", "arrow-left"]} />
       </Button>
-      <div css={HoursForecastWrapCSS} className={styles.hourlyForecast}>
-        <div ref={slideContentRef} css={HoursForecastCSS}>
-          {getHourlyForecast()}
-        </div>
+      <div css={HoursForecastWrapCSS}>
+        <div css={HoursForecastCSS}>{getHourlyForecast()}</div>
       </div>
       <Button
         onClick={() =>
@@ -117,8 +98,20 @@ export default function HourlyWeather({ forecast, isExpanded }) {
         size={"small"}
         variant="outlined"
       >
-        <FontAwesomeIcon className={styles.buttonicon} icon={["fas", "arrow-right"]} />
+        <FontAwesomeIcon icon={["fas", "arrow-right"]} />
       </Button>
+    </div>
+  );
+}
+
+function HourWeatherElement({ weather, index }) {
+  const appContext = useContext(AppContext);
+
+  return (
+    <div className={styles.hourWeatherElement}>
+      <h3>{index === 0 ? <strong>Now</strong> : weather.hour}</h3>
+      <img src={weather.condition} alt={"weatherHour" + index} />
+      <h3>{Math.round(weather.temperature) + "°" + appContext.temperatureUnit}</h3>
     </div>
   );
 }
