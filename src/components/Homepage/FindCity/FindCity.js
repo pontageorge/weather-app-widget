@@ -38,10 +38,6 @@ export default function FindCity() {
     return option === selectedCity;
   };
 
-  const getCityNameOnly = (fullString) => {
-    return fullString.split(",")[0];
-  };
-
   return (
     <div className={styles.componentWrap}>
       <h2>Lookup locations</h2>
